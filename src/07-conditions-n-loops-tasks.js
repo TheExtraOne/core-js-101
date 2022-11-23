@@ -200,8 +200,13 @@ function isInsideCircle(circle, point) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i += 1) {
+    if (str.indexOf(str[i]) === str.lastIndexOf(str[i])) {
+      return str[i];
+    }
+  }
+  return null;
 }
 
 
@@ -227,8 +232,10 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = (isStartIncluded) ? '[' : '(';
+  const end = (isEndIncluded) ? ']' : ')';
+  return `${start}${Math.min(a, b)}, ${Math.max(a, b)}${end}`;
 }
 
 
@@ -244,8 +251,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -261,8 +268,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return parseFloat(String(num).split('').reverse().join(''));
 }
 
 
@@ -286,8 +293,42 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const arr = String(ccn).split('').map((item) => parseFloat(item));
+  let result;
+  if (!(arr.length % 2)) {
+    result = arr.map((item, index) => {
+      if (index === 0 || index % 2 === 0) {
+        return item * 2;
+      }
+      return item;
+    });
+  } else {
+    result = arr.map((item, index) => {
+      if (index % 2) {
+        return item * 2;
+      }
+      return item;
+    });
+  }
+  result.pop();
+  const sumArr = result.map((item) => {
+    if (item >= 10) {
+      return String(item).split('').reduce((acc, currentVal) => {
+        let sum = acc;
+        sum += parseFloat(currentVal);
+        return sum;
+      }, 0);
+    }
+    return item;
+  });
+
+  const finalSum = sumArr.reduce((acc, currentVal) => {
+    let sum = acc;
+    sum += parseFloat(currentVal);
+    return sum;
+  }, 0);
+  return ((10 - (finalSum % 10)) % 10) === arr[arr.length - 1];
 }
 
 /**
@@ -304,8 +345,17 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arrNum = String(num).split('').map((item) => parseFloat(item));
+  const result = arrNum.reduce((acc, current) => {
+    let sum = acc;
+    sum += current;
+    return sum;
+  }, 0);
+  if (result >= 10) {
+    return getDigitalRoot(result);
+  }
+  return result;
 }
 
 
@@ -330,8 +380,35 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  if (!str.length) {
+    return true;
+  }
+  const openArr = [];
+  const brakets = {
+    '{': '}',
+    '[': ']',
+    '(': ')',
+    '<': '>',
+  };
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] in brakets) {
+      openArr.push(str[i]);
+    } else {
+      if (!openArr.length) {
+        return false;
+      }
+      if (brakets[openArr[openArr.length - 1]] === str[i]) {
+        openArr.pop();
+      } else {
+        return false;
+      }
+    }
+  }
+  if (openArr.length) {
+    return false;
+  }
+  return true;
 }
 
 
@@ -355,8 +432,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return (num).toString(n);
 }
 
 
