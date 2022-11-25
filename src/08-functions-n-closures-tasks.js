@@ -83,7 +83,7 @@ function getPolynom() {
  */
 function memoize(func) {
   const cash = {};
-  return function (param) {
+  return (param) => {
     if (param in cash) {
       return cash[param];
     }
