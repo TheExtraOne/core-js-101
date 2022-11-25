@@ -492,8 +492,30 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const rowsA = m1.length;
+  const colsA = m1[0].length;
+  const rowsB = m2.length;
+  const colsB = m2[0].length;
+  const result = [];
+
+  if (colsA !== rowsB) {
+    return null;
+  }
+
+  for (let row = 0; row < rowsA; row += 1) {
+    result[row] = [];
+    for (let col = 0; col < colsB; col += 1) {
+      for (let i = 0; i < rowsA; i += 1) {
+        let sum = 0;
+        for (let j = 0; j < rowsB; j += 1) {
+          sum += m1[row][j] * m2[j][col];
+          result[row][col] = sum;
+        }
+      }
+    }
+  }
+  return result;
 }
 
 
@@ -527,8 +549,54 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const diagArr = [];
+  const reversedDiadArr = [];
+
+  for (let i = 0; i < position.length; i += 1) {
+    diagArr.push(position[i][i]);
+  }
+  for (let i = 0; i < position.length; i += 1) {
+    reversedDiadArr.push(position[i][position.length - i - 1]);
+  }
+
+  if ((diagArr.every((item) => item === 'X') && diagArr.length === 3)
+    || (reversedDiadArr.every((item) => item === 'X') && reversedDiadArr.length === 3)) {
+    return 'X';
+  }
+  if ((diagArr.every((item) => item === '0') && diagArr.length === 3)
+    || (reversedDiadArr.every((item) => item === '0') && reversedDiadArr.length === 3)) {
+    return '0';
+  }
+
+  let rows = [];
+  for (let i = 0; i < position.length; i += 1) {
+    for (let j = 0; j < position[i].length; j += 1) {
+      rows.push(position[i][j]);
+    }
+    if (rows.every((item) => item === '0') && rows.length === 3) {
+      return '0';
+    }
+    if (rows.every((item) => item === 'X') && rows.length === 3) {
+      return 'X';
+    }
+    rows = [];
+  }
+
+  let cols = [];
+  for (let i = 0; i < position.length; i += 1) {
+    for (let j = 0; j < position[i].length; j += 1) {
+      cols.push(position[j][i]);
+    }
+    if (cols.every((item) => item === '0') && cols.length === 3) {
+      return '0';
+    }
+    if (cols.every((item) => item === 'X') && cols.length === 3) {
+      return 'X';
+    }
+    cols = [];
+  }
+  return undefined;
 }
 
 
